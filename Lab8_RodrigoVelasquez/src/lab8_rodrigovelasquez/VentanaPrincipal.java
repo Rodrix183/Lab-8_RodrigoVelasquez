@@ -1,5 +1,8 @@
 package lab8_rodrigovelasquez;
 
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
 public class VentanaPrincipal extends javax.swing.JFrame {
 
     public VentanaPrincipal() {
@@ -14,6 +17,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         cb_Proyecto = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTree1 = new javax.swing.JTree();
+        jd_Proyecto = new javax.swing.JDialog();
+        tf_NombreProyecto = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        tf_DuracionProyecto = new javax.swing.JTextField();
+        jButton5 = new javax.swing.JButton();
+        jd_Actividad = new javax.swing.JDialog();
         jToolBar1 = new javax.swing.JToolBar();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -47,6 +57,60 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addContainerGap(56, Short.MAX_VALUE))
         );
 
+        jLabel1.setText("Nombre");
+
+        jLabel2.setText("Duracion");
+
+        jButton5.setText("Crear Proyecto");
+        jButton5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton5MouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jd_ProyectoLayout = new javax.swing.GroupLayout(jd_Proyecto.getContentPane());
+        jd_Proyecto.getContentPane().setLayout(jd_ProyectoLayout);
+        jd_ProyectoLayout.setHorizontalGroup(
+            jd_ProyectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jd_ProyectoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jd_ProyectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
+                .addGap(87, 87, 87)
+                .addGroup(jd_ProyectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tf_NombreProyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tf_DuracionProyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton5))
+                .addContainerGap(35, Short.MAX_VALUE))
+        );
+        jd_ProyectoLayout.setVerticalGroup(
+            jd_ProyectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jd_ProyectoLayout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addGroup(jd_ProyectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tf_NombreProyecto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jd_ProyectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(tf_DuracionProyecto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33)
+                .addComponent(jButton5)
+                .addContainerGap(36, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jd_ActividadLayout = new javax.swing.GroupLayout(jd_Actividad.getContentPane());
+        jd_Actividad.getContentPane().setLayout(jd_ActividadLayout);
+        jd_ActividadLayout.setHorizontalGroup(
+            jd_ActividadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jd_ActividadLayout.setVerticalGroup(
+            jd_ActividadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jToolBar1.setRollover(true);
@@ -73,10 +137,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         tb_Actividades.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "Nombre", "Duracion", "Title 3", "Title 4", "Title 5"
@@ -121,8 +182,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         .addComponent(jButton4))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(74, 74, 74)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(81, Short.MAX_VALUE))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(171, Short.MAX_VALUE))
         );
 
         pack();
@@ -135,6 +196,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jd_Arbol.setLocationRelativeTo(this);
         jd_Arbol.setVisible(true);
     }//GEN-LAST:event_jButton3MouseClicked
+
+    private void jButton5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MouseClicked
+        String nombre = tf_NombreProyecto.getText();
+        int duracion = Integer.parseInt(tf_DuracionProyecto.getText());
+        lista_proyectos.add(new Proyecto(nombre, duracion));
+        JOptionPane.showMessageDialog(jd_Proyecto, "Registrado!");
+    }//GEN-LAST:event_jButton5MouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -174,11 +242,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTree jTree1;
+    private javax.swing.JDialog jd_Actividad;
     private javax.swing.JDialog jd_Arbol;
+    private javax.swing.JDialog jd_Proyecto;
     private javax.swing.JTable tb_Actividades;
+    private javax.swing.JTextField tf_DuracionProyecto;
+    private javax.swing.JTextField tf_NombreProyecto;
     // End of variables declaration//GEN-END:variables
+    ArrayList<Proyecto> lista_proyectos = new ArrayList<>();
 }
