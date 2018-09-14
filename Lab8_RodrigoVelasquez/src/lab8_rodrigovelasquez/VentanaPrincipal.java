@@ -20,6 +20,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         cb_Proyecto = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         jt_Arbol = new javax.swing.JTree();
+        jButton7 = new javax.swing.JButton();
         jd_Proyecto = new javax.swing.JDialog();
         tf_NombreProyecto = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -40,6 +41,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         tf_RetrasoActividad = new javax.swing.JTextField();
         buttonGroup1 = new javax.swing.ButtonGroup();
+        pp_CRUD = new javax.swing.JPopupMenu();
+        Modificar = new javax.swing.JMenuItem();
+        Eliminar = new javax.swing.JMenuItem();
         jToolBar1 = new javax.swing.JToolBar();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -48,9 +52,27 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         tb_Actividades = new javax.swing.JTable();
         jButton4 = new javax.swing.JButton();
 
+        cb_Proyecto.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cb_ProyectoItemStateChanged(evt);
+            }
+        });
+
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Rodri Corps");
         jt_Arbol.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        jt_Arbol.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jt_ArbolMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jt_Arbol);
+
+        jButton7.setText("Mostrar");
+        jButton7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton7MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jd_ArbolLayout = new javax.swing.GroupLayout(jd_Arbol.getContentPane());
         jd_Arbol.getContentPane().setLayout(jd_ArbolLayout);
@@ -58,7 +80,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             jd_ArbolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jd_ArbolLayout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addComponent(cb_Proyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jd_ArbolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cb_Proyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton7))
                 .addGap(38, 38, 38)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(42, Short.MAX_VALUE))
@@ -69,7 +93,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addGap(44, 44, 44)
                 .addGroup(jd_ArbolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cb_Proyecto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jd_ArbolLayout.createSequentialGroup()
+                        .addComponent(cb_Proyecto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton7)))
                 .addContainerGap(56, Short.MAX_VALUE))
         );
 
@@ -212,6 +239,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addGap(22, 22, 22))
         );
 
+        Modificar.setText("Modificar");
+        pp_CRUD.add(Modificar);
+
+        Eliminar.setText("Eliminar");
+        pp_CRUD.add(Eliminar);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jToolBar1.setRollover(true);
@@ -309,13 +342,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3MouseClicked
 
     private void jButton5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MouseClicked
+        //crear proyecto
         try {
-            DefaultTreeModel modelo = (DefaultTreeModel) jt_Arbol.getModel();
-            DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) modelo.getRoot();
-            DefaultMutableTreeNode p = null;
+//            DefaultTreeModel modelo = (DefaultTreeModel) jt_Arbol.getModel();
+//            DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) modelo.getRoot();
+//            DefaultMutableTreeNode p = null;
             String nombre = tf_NombreProyecto.getText();
             int duracion = Integer.parseInt(tf_DuracionProyecto.getText());
-            p = new DefaultMutableTreeNode(new Proyecto(nombre, duracion));
+            //p = new DefaultMutableTreeNode(new Proyecto(nombre, duracion));
+            cb_Proyecto.addItem(new Proyecto(nombre, duracion).toString());
             lista_proyectos.add(new Proyecto(nombre, duracion));
             JOptionPane.showMessageDialog(jd_Proyecto, "Registrado!");
             jd_Proyecto.dispose();
@@ -368,6 +403,29 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jd_Actividad.setVisible(true);
     }//GEN-LAST:event_jButton2MouseClicked
 
+    private void cb_ProyectoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_ProyectoItemStateChanged
+        seleccion = cb_Proyecto.getSelectedIndex();
+    }//GEN-LAST:event_cb_ProyectoItemStateChanged
+
+    private void jButton7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton7MouseClicked
+        //Mostrar al arbol
+        try {
+            DefaultTreeModel modelo = (DefaultTreeModel) jt_Arbol.getModel();
+            DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) modelo.getRoot();
+            DefaultMutableTreeNode p = null;
+            p = new DefaultMutableTreeNode(lista_proyectos.get(seleccion));
+            raiz.add(p);
+            modelo.reload();
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_jButton7MouseClicked
+
+    private void jt_ArbolMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jt_ArbolMouseClicked
+        if (evt.isMetaDown()) {
+            pp_CRUD.show(evt.getComponent(), evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_jt_ArbolMouseClicked
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -401,6 +459,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem Eliminar;
+    private javax.swing.JMenuItem Modificar;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cb_Proyecto;
     private javax.swing.JComboBox<String> cb_ProyectosRegistro;
@@ -410,6 +470,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -424,6 +485,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JDialog jd_Arbol;
     private javax.swing.JDialog jd_Proyecto;
     private javax.swing.JTree jt_Arbol;
+    private javax.swing.JPopupMenu pp_CRUD;
     private javax.swing.JRadioButton rb_Predecesor;
     private javax.swing.JRadioButton rb_Sucesor;
     private javax.swing.JTable tb_Actividades;
@@ -434,5 +496,5 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JTextField tf_RetrasoActividad;
     // End of variables declaration//GEN-END:variables
     ArrayList<Proyecto> lista_proyectos = new ArrayList<>();
-
+    int seleccion = 0;
 }
