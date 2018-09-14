@@ -10,16 +10,18 @@ public class Actividades {
     private int p_retraso;
     private ArrayList<Actividades> sucesores = new ArrayList<>();
     private ArrayList<Actividades> predecesores = new ArrayList<>();
+    private String estado;
 
     public Actividades() {
     }
 
-    public Actividades(String nombre, int inicio_temp, int duracion, int final_temp, int p_retraso) {
+    public Actividades(String nombre, int inicio_temp, int duracion, int final_temp, int p_retraso, String estado) {
         this.nombre = nombre;
         this.inicio_temp = inicio_temp;
         this.duracion = duracion;
         this.final_temp = final_temp;
         this.p_retraso = p_retraso;
+        this.estado = estado;
     }
 
     public String getNombre() {
@@ -77,6 +79,16 @@ public class Actividades {
     public void setPredecesores(ArrayList<Actividades> predecesores) {
         this.predecesores = predecesores;
     }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+    
+    
 
     @Override
     public String toString() {
