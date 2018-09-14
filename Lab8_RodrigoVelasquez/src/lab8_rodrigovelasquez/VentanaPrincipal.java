@@ -349,8 +349,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 //            DefaultMutableTreeNode p = null;
             String nombre = tf_NombreProyecto.getText();
             int duracion = Integer.parseInt(tf_DuracionProyecto.getText());
-            //p = new DefaultMutableTreeNode(new Proyecto(nombre, duracion));
             cb_Proyecto.addItem(new Proyecto(nombre, duracion).toString());
+            cb_ProyectosRegistro.addItem(new Proyecto(nombre, duracion).toString());
             lista_proyectos.add(new Proyecto(nombre, duracion));
             JOptionPane.showMessageDialog(jd_Proyecto, "Registrado!");
             jd_Proyecto.dispose();
@@ -404,20 +404,33 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2MouseClicked
 
     private void cb_ProyectoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_ProyectoItemStateChanged
-        seleccion = cb_Proyecto.getSelectedIndex();
-    }//GEN-LAST:event_cb_ProyectoItemStateChanged
-
-    private void jButton7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton7MouseClicked
-        //Mostrar al arbol
         try {
+            
+            
+            seleccion = cb_Proyecto.getSelectedIndex();
             DefaultTreeModel modelo = (DefaultTreeModel) jt_Arbol.getModel();
             DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) modelo.getRoot();
             DefaultMutableTreeNode p = null;
+            raiz.removeAllChildren();
             p = new DefaultMutableTreeNode(lista_proyectos.get(seleccion));
             raiz.add(p);
             modelo.reload();
         } catch (Exception e) {
         }
+        
+    }//GEN-LAST:event_cb_ProyectoItemStateChanged
+
+    private void jButton7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton7MouseClicked
+        //Mostrar al arbol
+//        try {
+//            DefaultTreeModel modelo = (DefaultTreeModel) jt_Arbol.getModel();
+//            DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) modelo.getRoot();
+//            DefaultMutableTreeNode p = null;
+//            p = new DefaultMutableTreeNode(lista_proyectos.get(seleccion));
+//            raiz.add(p);
+//            modelo.reload();
+//        } catch (Exception e) {
+//        }
     }//GEN-LAST:event_jButton7MouseClicked
 
     private void jt_ArbolMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jt_ArbolMouseClicked
