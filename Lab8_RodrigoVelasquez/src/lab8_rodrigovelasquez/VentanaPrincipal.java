@@ -22,7 +22,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         cb_Proyecto = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         jt_Arbol = new javax.swing.JTree();
-        jButton7 = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
         jd_Proyecto = new javax.swing.JDialog();
         tf_NombreProyecto = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -73,12 +73,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jt_Arbol);
 
-        jButton7.setText("Mostrar");
-        jButton7.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton7MouseClicked(evt);
-            }
-        });
+        jLabel6.setFont(new java.awt.Font("Tahoma", 2, 14)); // NOI18N
+        jLabel6.setText("NOTA: Se necesitan dos proyectos minimo para mostrar");
 
         javax.swing.GroupLayout jd_ArbolLayout = new javax.swing.GroupLayout(jd_Arbol.getContentPane());
         jd_Arbol.getContentPane().setLayout(jd_ArbolLayout);
@@ -86,23 +82,21 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             jd_ArbolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jd_ArbolLayout.createSequentialGroup()
                 .addGap(22, 22, 22)
+                .addComponent(cb_Proyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(44, 44, 44)
                 .addGroup(jd_ArbolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cb_Proyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton7))
-                .addGap(38, 38, 38)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(42, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
         jd_ArbolLayout.setVerticalGroup(
             jd_ArbolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jd_ArbolLayout.createSequentialGroup()
-                .addGap(44, 44, 44)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(9, 9, 9)
                 .addGroup(jd_ArbolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jd_ArbolLayout.createSequentialGroup()
-                        .addComponent(cb_Proyecto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton7)))
+                    .addComponent(cb_Proyecto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(56, Short.MAX_VALUE))
         );
 
@@ -165,10 +159,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel8.setText("Proyecto");
 
         buttonGroup1.add(rb_Predecesor);
-        rb_Predecesor.setText("Sucesor");
+        rb_Predecesor.setText("Predecesor");
 
         buttonGroup1.add(rb_Sucesor);
-        rb_Sucesor.setText("Predecesor");
+        rb_Sucesor.setText("Sucesor");
 
         jLabel5.setText("Posibilidad de Retraso");
 
@@ -470,6 +464,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 a_final = final_temp + duracion;
                 lista_proyectos.get(proyecto_seleccionado).getLista_actividades().add(new Actividades(nombre, inicio, duracion, final_temp, retraso, estado));
                 cb_ActividadSucesor.addItem(new Actividades(nombre, inicio, duracion, final_temp, retraso, estado).toString());
+                //agregar Sucesores
+                lista_proyectos.get(proyecto_seleccionado).getLista_actividades().get(inicio).getPredecesores().add(new Actividades(nombre, final_temp, duracion, final_temp, retraso, estado));
+
                 datos[0] = nombre;
                 datos[1] = Integer.toString(inicio);
                 datos[2] = Integer.toString(duracion);
@@ -499,6 +496,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 a_final = final_temp + duracion;
                 lista_proyectos.get(proyecto_seleccionado).getLista_actividades().add(new Actividades(nombre, inicio, duracion, final_temp, retraso, estado));
                 cb_ActividadSucesor.addItem(new Actividades(nombre, inicio, duracion, final_temp, retraso, estado).toString());
+
+                //agregar sucesores
+                lista_proyectos.get(proyecto_seleccionado).getLista_actividades().get(inicio).getPredecesores().add(new Actividades(nombre, final_temp, duracion, final_temp, retraso, estado));
                 datos[0] = nombre;
                 datos[1] = Integer.toString(inicio);
                 datos[2] = Integer.toString(duracion);
@@ -533,27 +533,23 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             DefaultTreeModel modelo = (DefaultTreeModel) jt_Arbol.getModel();
             DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) modelo.getRoot();
             DefaultMutableTreeNode p = null;
+            DefaultMutableTreeNode omejia1;
             raiz.removeAllChildren();
             p = new DefaultMutableTreeNode(lista_proyectos.get(seleccion));
+            for (int i = 0; i < lista_proyectos.size(); i++) {
+                for (int j = 0; j < lista_proyectos.get(i).getLista_actividades().size(); j++) {
+                    //omejia1 = null;
+                    omejia1 = new DefaultMutableTreeNode(lista_proyectos.get(i).getLista_actividades().get(j));
+                    p.add(omejia1);
+                }
+
+            }
             raiz.add(p);
             modelo.reload();
         } catch (Exception e) {
         }
 
     }//GEN-LAST:event_cb_ProyectoItemStateChanged
-
-    private void jButton7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton7MouseClicked
-        //Mostrar al arbol
-//        try {
-//            DefaultTreeModel modelo = (DefaultTreeModel) jt_Arbol.getModel();
-//            DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) modelo.getRoot();
-//            DefaultMutableTreeNode p = null;
-//            p = new DefaultMutableTreeNode(lista_proyectos.get(seleccion));
-//            raiz.add(p);
-//            modelo.reload();
-//        } catch (Exception e) {
-//        }
-    }//GEN-LAST:event_jButton7MouseClicked
 
     private void jt_ArbolMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jt_ArbolMouseClicked
         if (evt.isMetaDown()) {
@@ -589,6 +585,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 //String nombre, int inicio_temp, int duracion, int final_temp, int p_retraso, String estado
                 lista_proyectos.get(pos).getLista_actividades().add(new Actividades(actual, a_inicio, a_duracion, a_final, a_tardio, a_estado));
 
+                lista_proyectos.get(proyecto_seleccionado).getLista_actividades().get(s).getSucesores().add(new Actividades(actual, a_inicio, a_duracion, final_Mayor, a_tardio, a_estado));
+                String act = lista_proyectos.get(proyecto_seleccionado).getLista_actividades().get(s).getSucesores().toString();
+                System.out.println("Actividad Seleccionada: " + act);
                 //JOptionPane.showMessageDialog(jd_Sucesor, "Agregado!");
                 datos[0] = actual;
                 datos[1] = Integer.toString(a_inicio);
@@ -629,7 +628,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 duracion *= 1000;
                 hilo = new AdministrarActividades(estado, duracion, modeloTabla, i);
                 hilo.start();
-                
+
             }
         } else {
             JOptionPane.showMessageDialog(this, "No se ha seleccionado ningun proyecto!");
@@ -641,9 +640,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarActionPerformed
         //eliminar
         DefaultTreeModel modelo = (DefaultTreeModel) jt_Arbol.getModel();
+        DefaultTableModel modeloTabla = (DefaultTableModel) tb_Actividades.getModel();
         modelo.removeNodeFromParent(nodo_seleccionado);
         lista_proyectos.remove(nodo_seleccionado); //el nodo seleccionado ahorita es Torneo Futbol
         cb_ActividadSucesor.removeItem(nodo_seleccionado.toString());
+        modeloTabla.removeRow(nodo_seleccionado.getChildCount());
         cb_Proyecto.removeItem(nodo_seleccionado.toString());
         cb_ProyectosRegistro.removeItem(nodo_seleccionado.toString());
         box_Proyectos.removeItem(nodo_seleccionado.toString());
@@ -781,13 +782,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
