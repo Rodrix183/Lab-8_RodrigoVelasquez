@@ -11,6 +11,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     public VentanaPrincipal() {
         initComponents();
+        this.setLocationRelativeTo(this);
     }
 
     @SuppressWarnings("unchecked")
@@ -55,6 +56,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tb_Actividades = new javax.swing.JTable();
         jButton4 = new javax.swing.JButton();
+        box_Proyectos = new javax.swing.JComboBox<>();
 
         cb_Proyecto.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -247,6 +249,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         pp_CRUD.add(Modificar);
 
         Eliminar.setText("Eliminar");
+        Eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EliminarActionPerformed(evt);
+            }
+        });
         pp_CRUD.add(Eliminar);
 
         jButton8.setText("Confirmar");
@@ -357,8 +364,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(67, 67, 67)
-                        .addComponent(jButton4)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(67, 67, 67)
+                                .addComponent(jButton4))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(box_Proyectos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 567, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -370,7 +382,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(128, 128, 128)
+                        .addGap(90, 90, 90)
+                        .addComponent(box_Proyectos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(jButton4))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(74, 74, 74)
@@ -400,6 +414,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             cb_Proyecto.addItem(new Proyecto(nombre, duracion).toString());
             cb_ProyectosRegistro.addItem(new Proyecto(nombre, duracion).toString());
             lista_proyectos.add(new Proyecto(nombre, duracion));
+            box_Proyectos.addItem(new Proyecto(nombre, duracion).toString());
             JOptionPane.showMessageDialog(jd_Proyecto, "Registrado!");
             jd_Proyecto.dispose();
             tf_NombreProyecto.setText("");
@@ -514,7 +529,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void jt_ArbolMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jt_ArbolMouseClicked
         int nodo = jt_Arbol.getClosestRowForLocation(evt.getX(), evt.getY());
-        System.out.println("Nodo" + nodo);
+        jt_Arbol.setSelectionRow(nodo);
+        Object v1 = jt_Arbol.getSelectionPath().getLastPathComponent();
+        nodo_seleccionado = (DefaultMutableTreeNode) v1;
+        
+        System.out.println("Nodo " + nodo_seleccionado);
         if (evt.isMetaDown()) {
             pp_CRUD.show(evt.getComponent(), evt.getX(), evt.getY());
         }
@@ -535,24 +554,34 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton8MouseClicked
 
     private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
-        //aqui la tabla iniciar
-        // rfer
-        Actividades ac;
+        //Boton ejecutar de la tabla        
         AdministrarActividades hilo = null;
         int duracion = 1;
         String estado = "En cola";
-        //el for normal para los hilos
-        for (int i = 0; i < lista_proyectos.size(); i++) {
-            for (int j = 0; j < lista_proyectos.get(i).getLista_actividades().size(); j++) {
-                duracion = lista_proyectos.get(i).getLista_actividades().get(j).getDuracion();
-                lista_proyectos.get(i).getLista_actividades().get(j).getEstado();
+
+        //el for normal para los hilos        
+        int po = box_Proyectos.getSelectedIndex();
+        if (box_Proyectos.getSelectedIndex() >= 0) {
+            for (int i = 0; i < lista_proyectos.get(po).getLista_actividades().size(); i++) {
+                duracion = lista_proyectos.get(po).getLista_actividades().get(i).getDuracion();
+                lista_proyectos.get(po).getLista_actividades().get(i).getEstado();
                 duracion *= 1000;
                 hilo = new AdministrarActividades(estado, duracion);
                 hilo.start();
             }
+        } else {
+            JOptionPane.showMessageDialog(this, "No se ha seleccionado ningun proyecto!");
         }
-        
+
+
     }//GEN-LAST:event_jButton4MouseClicked
+
+    private void EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarActionPerformed
+        DefaultTreeModel modelo = (DefaultTreeModel) jt_Arbol.getModel();        
+        modelo.removeNodeFromParent(nodo_seleccionado);
+        JOptionPane.showMessageDialog(jd_Arbol, "Eliminado!");
+        modelo.reload();
+    }//GEN-LAST:event_EliminarActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -589,6 +618,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Eliminar;
     private javax.swing.JMenuItem Modificar;
+    private javax.swing.JComboBox<String> box_Proyectos;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cb_ActividadSucesor;
     private javax.swing.JComboBox<String> cb_Proyecto;
@@ -629,4 +659,5 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     ArrayList<Proyecto> lista_proyectos = new ArrayList<>();
     int seleccion = 0;
     int proyecto_seleccionado = 0;
+   DefaultMutableTreeNode nodo_seleccionado;
 }

@@ -26,10 +26,8 @@ public class AdministrarActividades extends Thread {
     public void setSigue(boolean sigue) {
         this.sigue = sigue;
     }
-
+    int c = 1;
     
-    int c = 0;
-
     @Override
     public void run() {
         while (vive) {
@@ -52,7 +50,7 @@ public class AdministrarActividades extends Thread {
             } catch (InterruptedException ex) {
             }
         }
-        //estado = "Terminado";
+        estado = " Terminado";
         JOptionPane.showMessageDialog(null, estado);
     }
 
