@@ -246,6 +246,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         );
 
         Modificar.setText("Modificar");
+        Modificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ModificarActionPerformed(evt);
+            }
+        });
         pp_CRUD.add(Modificar);
 
         Eliminar.setText("Eliminar");
@@ -532,7 +537,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jt_Arbol.setSelectionRow(nodo);
         Object v1 = jt_Arbol.getSelectionPath().getLastPathComponent();
         nodo_seleccionado = (DefaultMutableTreeNode) v1;
-        
+
         System.out.println("Nodo " + nodo_seleccionado);
         if (evt.isMetaDown()) {
             pp_CRUD.show(evt.getComponent(), evt.getX(), evt.getY());
@@ -577,11 +582,39 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4MouseClicked
 
     private void EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarActionPerformed
-        DefaultTreeModel modelo = (DefaultTreeModel) jt_Arbol.getModel();        
+
+        DefaultTreeModel modelo = (DefaultTreeModel) jt_Arbol.getModel();
         modelo.removeNodeFromParent(nodo_seleccionado);
+        lista_proyectos.remove(nodo_seleccionado); //el nodo seleccionado ahorita es Torneo Futbol
+        cb_ActividadSucesor.removeItem(nodo_seleccionado.toString());
+        cb_Proyecto.removeItem(nodo_seleccionado.toString());
+        cb_ProyectosRegistro.removeItem(nodo_seleccionado.toString());
+        box_Proyectos.removeItem(nodo_seleccionado.toString());
         JOptionPane.showMessageDialog(jd_Arbol, "Eliminado!");
         modelo.reload();
     }//GEN-LAST:event_EliminarActionPerformed
+
+    private void ModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarActionPerformed
+        String nombreNuevo = "";
+        int tardio = 0;
+        int duracion = 0;
+        int pos = nodo_seleccionado.getLevel();
+        int resp = Integer.parseInt(JOptionPane.showInputDialog("1. Nombre"
+                + "\n2. Tiempo tardio"
+                + "\n3. Duracion"
+                + "\nQue desea modificar?"));
+        switch (resp) {
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            default:
+                JOptionPane.showMessageDialog(null, "No valido!");
+        }
+
+    }//GEN-LAST:event_ModificarActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -659,5 +692,5 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     ArrayList<Proyecto> lista_proyectos = new ArrayList<>();
     int seleccion = 0;
     int proyecto_seleccionado = 0;
-   DefaultMutableTreeNode nodo_seleccionado;
+    DefaultMutableTreeNode nodo_seleccionado;
 }
