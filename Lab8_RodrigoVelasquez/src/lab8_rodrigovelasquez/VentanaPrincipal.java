@@ -165,10 +165,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel8.setText("Proyecto");
 
         buttonGroup1.add(rb_Predecesor);
-        rb_Predecesor.setText("Predecesor");
+        rb_Predecesor.setText("Sucesor");
 
         buttonGroup1.add(rb_Sucesor);
-        rb_Sucesor.setText("Sucesor");
+        rb_Sucesor.setText("Predecesor");
 
         jLabel5.setText("Posibilidad de Retraso");
 
@@ -278,18 +278,18 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         .addGap(45, 45, 45)
                         .addComponent(cb_ActividadSucesor, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jd_SucesorLayout.createSequentialGroup()
-                        .addGap(70, 70, 70)
+                        .addGap(78, 78, 78)
                         .addComponent(jButton8)))
-                .addContainerGap(47, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
         jd_SucesorLayout.setVerticalGroup(
             jd_SucesorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jd_SucesorLayout.createSequentialGroup()
                 .addGap(35, 35, 35)
                 .addComponent(cb_ActividadSucesor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                 .addComponent(jButton8)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(44, 44, 44))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -441,6 +441,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void jButton6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton6MouseClicked
         try {
+            DefaultTableModel modeloTabla = (DefaultTableModel) tb_Actividades.getModel();
+            String[] datos = new String[6];
             DefaultTreeModel modelo = (DefaultTreeModel) jt_Arbol.getModel();
             DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) modelo.getRoot();
             DefaultMutableTreeNode n = null, p = null;
@@ -451,47 +453,68 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             proyecto_seleccionado = cb_ProyectosRegistro.getSelectedIndex();
             System.out.println(proyecto_seleccionado + "");
             String nombre = tf_NombreActividad.getText();
+            actual = nombre;
             int inicio = 0;
             int duracion = Integer.parseInt(tf_DuracionActividad.getText());
+            a_duracion = duracion;
             int final_temp = 0;
             int retraso = Integer.parseInt(tf_RetrasoActividad.getText());
             String estado = "En cola";
-            lista_proyectos.get(proyecto_seleccionado).getLista_actividades().add(new Actividades(nombre, inicio, duracion, final_temp, retraso, estado));
+            a_estado = estado;
 
             //aqui se asignan los nodos a los proyectos                        
             if (rb_Predecesor.isSelected()) {
-//                    n = new DefaultMutableTreeNode(new Actividades(nombre, final_temp, duracion, final_temp, retraso, estado));
-//                    p = new DefaultMutableTreeNode(lista_proyectos.get(proyecto_seleccionado));
-//                    p.add(n);
-//                    raiz.add(p);
+                inicio = 1;
+                final_temp = inicio + duracion;
+                a_inicio = inicio;
+                a_final = final_temp + duracion;
+                lista_proyectos.get(proyecto_seleccionado).getLista_actividades().add(new Actividades(nombre, inicio, duracion, final_temp, retraso, estado));
                 cb_ActividadSucesor.addItem(new Actividades(nombre, inicio, duracion, final_temp, retraso, estado).toString());
-                //modelo.reload();
+                datos[0] = nombre;
+                datos[1] = Integer.toString(inicio);
+                datos[2] = Integer.toString(duracion);
+                datos[3] = Integer.toString(final_temp);
+                datos[4] = Integer.toString(retraso);
+                datos[5] = estado;
+
+                modeloTabla.addRow(datos);
+
+                JOptionPane.showMessageDialog(jd_Actividad, "Registrado!");
+                tf_NombreActividad.setText("");
+                tf_RetrasoActividad.setText("");
+                tf_DuracionActividad.setText("");
+                jd_Actividad.dispose();
             } else if (rb_Sucesor.isSelected()) {
+                //int m = mayor(lista_proyectos, ,inicio);
+                a_final = a_inicio + a_duracion;
+                cb_ActividadSucesor.addItem(new Actividades(nombre, inicio, duracion, final_temp, retraso, estado).toString());
                 jd_Actividad.dispose();
                 jd_Sucesor.pack();
                 jd_Sucesor.setLocationRelativeTo(this);
                 jd_Sucesor.setVisible(true);
             } else {
+                inicio = 1;
+                final_temp = inicio + duracion;
+                a_inicio = inicio;
+                a_final = final_temp + duracion;
+                lista_proyectos.get(proyecto_seleccionado).getLista_actividades().add(new Actividades(nombre, inicio, duracion, final_temp, retraso, estado));
                 cb_ActividadSucesor.addItem(new Actividades(nombre, inicio, duracion, final_temp, retraso, estado).toString());
-                //sino hay nada seleccionado
+                datos[0] = nombre;
+                datos[1] = Integer.toString(inicio);
+                datos[2] = Integer.toString(duracion);
+                datos[3] = Integer.toString(final_temp);
+                datos[4] = Integer.toString(retraso);
+                datos[5] = estado;
+
+                modeloTabla.addRow(datos);
+
+                JOptionPane.showMessageDialog(jd_Actividad, "Registrado!");
+                tf_NombreActividad.setText("");
+                tf_RetrasoActividad.setText("");
+                tf_DuracionActividad.setText("");
+                jd_Actividad.dispose();
             }
 
-            DefaultTableModel modeloTabla = (DefaultTableModel) tb_Actividades.getModel();
-            String[] datos = new String[6];
-            datos[0] = nombre;
-            datos[1] = Integer.toString(inicio);
-            datos[2] = Integer.toString(duracion);
-            datos[3] = Integer.toString(final_temp);
-            datos[4] = Integer.toString(retraso);
-            datos[5] = estado;
-
-            modeloTabla.addRow(datos);
-
-            JOptionPane.showMessageDialog(jd_Actividad, "Registrado!");
-            tf_NombreActividad.setText("");
-            tf_RetrasoActividad.setText("");
-            tf_DuracionActividad.setText("");
-            jd_Actividad.dispose();
         } catch (Exception e) {
         }
     }//GEN-LAST:event_jButton6MouseClicked
@@ -533,25 +556,56 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton7MouseClicked
 
     private void jt_ArbolMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jt_ArbolMouseClicked
-        int nodo = jt_Arbol.getClosestRowForLocation(evt.getX(), evt.getY());
-        jt_Arbol.setSelectionRow(nodo);
-        Object v1 = jt_Arbol.getSelectionPath().getLastPathComponent();
-        nodo_seleccionado = (DefaultMutableTreeNode) v1;
-
-        System.out.println("Nodo " + nodo_seleccionado);
         if (evt.isMetaDown()) {
-            pp_CRUD.show(evt.getComponent(), evt.getX(), evt.getY());
+            int nodo = jt_Arbol.getClosestRowForLocation(evt.getX(), evt.getY());
+            jt_Arbol.setSelectionRow(nodo);
+            Object v1 = jt_Arbol.getSelectionPath().getLastPathComponent();
+            nodo_seleccionado = (DefaultMutableTreeNode) v1;
+
+            System.out.println("Nodo " + nodo_seleccionado);
+            if (nodo_seleccionado.getUserObject() instanceof Proyecto) {
+                proyecto_sel = (Proyecto) nodo_seleccionado.getUserObject();
+                pp_CRUD.show(evt.getComponent(), evt.getX(), evt.getY());
+            } else if (nodo_seleccionado.getUserObject() instanceof Actividades) {
+                actividad_seleccionada = (Actividades) nodo_seleccionado.getUserObject();
+                pp_CRUD.show(evt.getComponent(), evt.getX(), evt.getY());
+            }
+
         }
     }//GEN-LAST:event_jt_ArbolMouseClicked
 
     private void jButton8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton8MouseClicked
+        //si es sucesor
         try {
+            DefaultTableModel modeloTabla = (DefaultTableModel) tb_Actividades.getModel();
+            String[] datos = new String[6];
             int s = cb_ActividadSucesor.getSelectedIndex();
-            if (cb_ActividadSucesor.getSelectedItem() == lista_proyectos.get(seleccion).getLista_actividades().get(s)) {
+            int pos = cb_ProyectosRegistro.getSelectedIndex();
+
+            if (cb_ActividadSucesor.getSelectedItem() == actual) {
                 JOptionPane.showMessageDialog(jd_Sucesor, "No puede ser el mismo");
             } else {
-                JOptionPane.showMessageDialog(jd_Sucesor, "Agregado!");
+                //sino se repite
+                //String nombre, int inicio_temp, int duracion, int final_temp, int p_retraso, String estado
+                lista_proyectos.get(pos).getLista_actividades().add(new Actividades(actual, a_inicio, a_duracion, a_final, a_tardio, a_estado));
+
+                //JOptionPane.showMessageDialog(jd_Sucesor, "Agregado!");
+                datos[0] = actual;
+                datos[1] = Integer.toString(a_inicio);
+                datos[2] = Integer.toString(a_duracion);
+                datos[3] = Integer.toString(a_final);
+                datos[4] = Integer.toString(a_tardio);
+                datos[5] = a_estado;
+
+                modeloTabla.addRow(datos);
+
+                JOptionPane.showMessageDialog(jd_Actividad, "Registrado!");
+                tf_NombreActividad.setText("");
+                tf_RetrasoActividad.setText("");
+                tf_DuracionActividad.setText("");
+
                 jd_Sucesor.dispose();
+                jd_Actividad.dispose();
                 this.setVisible(true);
             }
         } catch (Exception e) {
@@ -562,7 +616,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         //Boton ejecutar de la tabla        
         AdministrarActividades hilo = null;
         int duracion = 1;
+        int posicionFila = 0;
         String estado = "En cola";
+        DefaultTableModel modeloTabla = (DefaultTableModel) tb_Actividades.getModel();
 
         //el for normal para los hilos        
         int po = box_Proyectos.getSelectedIndex();
@@ -571,8 +627,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 duracion = lista_proyectos.get(po).getLista_actividades().get(i).getDuracion();
                 lista_proyectos.get(po).getLista_actividades().get(i).getEstado();
                 duracion *= 1000;
-                hilo = new AdministrarActividades(estado, duracion);
+                hilo = new AdministrarActividades(estado, duracion, modeloTabla, i);
                 hilo.start();
+                
             }
         } else {
             JOptionPane.showMessageDialog(this, "No se ha seleccionado ningun proyecto!");
@@ -582,7 +639,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4MouseClicked
 
     private void EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarActionPerformed
-
+        //eliminar
         DefaultTreeModel modelo = (DefaultTreeModel) jt_Arbol.getModel();
         modelo.removeNodeFromParent(nodo_seleccionado);
         lista_proyectos.remove(nodo_seleccionado); //el nodo seleccionado ahorita es Torneo Futbol
@@ -595,24 +652,74 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_EliminarActionPerformed
 
     private void ModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarActionPerformed
-        String nombreNuevo = "";
-        int tardio = 0;
-        int duracion = 0;
-        int pos = nodo_seleccionado.getLevel();
-        int resp = Integer.parseInt(JOptionPane.showInputDialog("1. Nombre"
-                + "\n2. Tiempo tardio"
-                + "\n3. Duracion"
-                + "\nQue desea modificar?"));
-        switch (resp) {
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            default:
-                JOptionPane.showMessageDialog(null, "No valido!");
+        try {
+            DefaultTreeModel modelo = (DefaultTreeModel) jt_Arbol.getModel();
+            DefaultMutableTreeNode nodo = null;
+            DefaultTableModel modeloTabla = (DefaultTableModel) tb_Actividades.getModel();
+            String[] datos = new String[6];
+            String nombreNuevo = "";
+            int tardio = 0;
+            int duracion = 0;
+            int nivel = nodo_seleccionado.getLevel();
+            int pos = nodo_seleccionado.getChildCount();
+            System.out.println("Nodo: " + pos);
+            System.out.println("Nivel: " + nivel);
+            if (nodo_seleccionado.getLevel() == 1) {
+                int resp = Integer.parseInt(JOptionPane.showInputDialog("1. Nombre"
+                        + "\n2. Duracion Proyecto"
+                        + "\nQue desea modificar?"));
+                switch (resp) {
+                    case 1:
+                        nombreNuevo = JOptionPane.showInputDialog("Nuevo nombre");
+                        proyecto_sel.setNombre(nombreNuevo);
+                        modelo.reload();
+                        break;
+                    case 2:
+                        duracion = Integer.parseInt(JOptionPane.showInputDialog("Nueva duracion"));
+                        proyecto_sel.setDuracion(duracion);
+                        modelo.reload();
+                        break;
+                    default:
+                        JOptionPane.showMessageDialog(null, "No valido!");
+                }
+            } else if (nodo_seleccionado.getLevel() > 1) {
+                int resp = Integer.parseInt(JOptionPane.showInputDialog("1. Nombre"
+                        + "\n2. Tiempo tardio"
+                        + "\n3. Duracion"
+                        + "\nQue desea modificar?"));
+                switch (resp) {
+                    case 1:
+                        nombreNuevo = JOptionPane.showInputDialog("Nuevo nombre");
+                        actividad_seleccionada.setNombre(nombreNuevo);
+                        lista_proyectos.get(cb_Proyecto.getSelectedIndex()).getLista_actividades().get(nivel).setDuracion(duracion);
+
+                        modeloTabla.setValueAt(nombreNuevo, nivel, 0);
+                        modelo.reload();
+                        break;
+                    case 2:
+                        tardio = Integer.parseInt(JOptionPane.showInputDialog("Nueva probabilidad de demora"));
+                        actividad_seleccionada.setP_retraso(tardio);
+                        lista_proyectos.get(cb_Proyecto.getSelectedIndex()).getLista_actividades().get(nivel).setDuracion(duracion);
+
+                        modeloTabla.setValueAt(tardio, nivel, 4);
+                        modelo.reload();
+                        break;
+                    case 3:
+                        duracion = Integer.parseInt(JOptionPane.showInputDialog("Nueva Duracion"));
+                        actividad_seleccionada.setDuracion(duracion);
+                        lista_proyectos.get(cb_Proyecto.getSelectedIndex()).getLista_actividades().get(nivel).setDuracion(duracion);
+
+                        modeloTabla.setValueAt(duracion, nivel, 2);
+                        modelo.reload();
+                        break;
+                    default:
+                        JOptionPane.showMessageDialog(null, "No valido!");
+                }
+            }
+
+        } catch (Exception e) {
         }
+
 
     }//GEN-LAST:event_ModificarActionPerformed
 
@@ -647,6 +754,18 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
     }
+
+//    public static int mayor(ArrayList lista_proyectos, ArrayList Lista_actividades, int inicio) {
+//        int m = 0;
+//        for (int i = 0; i < lista_proyectos.size(); i++) {
+//            for (int j = 0; j < lista_proyectos.get(i).getLista_actividades().size(); j++) {
+//                if (lista_proyectos.get(i).getLista_actividades().get(j).getP_retraso() <= lista_proyectos.get(i).getLista_actividades().get(j + 1).getP_retraso()) {
+//                    inicio = lista_proyectos.get(i).getLista_actividades().get(j + 1).getP_retraso();
+//                }
+//            }
+//        }
+//        return m;
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Eliminar;
@@ -693,4 +812,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     int seleccion = 0;
     int proyecto_seleccionado = 0;
     DefaultMutableTreeNode nodo_seleccionado;
+    int final_Mayor = 0;
+    String actual = "", a_estado = "";
+    int a_inicio = 0, a_duracion = 0, a_tardio = 0, a_final = 0;
+    Actividades actividad_seleccionada;
+    Proyecto proyecto_sel;
 }

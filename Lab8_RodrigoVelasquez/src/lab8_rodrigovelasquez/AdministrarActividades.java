@@ -3,18 +3,24 @@ package lab8_rodrigovelasquez;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class AdministrarActividades extends Thread {
 
     private String estado;
     private int duracion;
+    //private JTable tabla;
     private boolean vive;
     private boolean sigue;
+    private int pos;
+    private DefaultTableModel modelo;
 
-    public AdministrarActividades(String estado, int duracion) {
+    public AdministrarActividades(String estado, int duracion, DefaultTableModel modelo, int pos) {
         this.estado = estado;
         this.duracion = duracion;
+        this.modelo = modelo;
+        this.pos = pos;
         vive = true;
         sigue = true;
     }
@@ -27,7 +33,7 @@ public class AdministrarActividades extends Thread {
         this.sigue = sigue;
     }
     int c = 1;
-    
+
     @Override
     public void run() {
         while (vive) {
@@ -39,9 +45,7 @@ public class AdministrarActividades extends Thread {
             }
             if (duracion <= 0) {
                 vive = false;
-//                VentanaPrincipal vp = new VentanaPrincipal();
-//                vp.lista_proyectos.get(c).getLista_actividades().get(c).setEstado("Terminado");
-//                DefaultTableModel 
+
             }
 
             try {
@@ -52,6 +56,7 @@ public class AdministrarActividades extends Thread {
         }
         estado = " Terminado";
         JOptionPane.showMessageDialog(null, estado);
+        modelo.setValueAt(estado, pos, 5);
     }
 
 }
