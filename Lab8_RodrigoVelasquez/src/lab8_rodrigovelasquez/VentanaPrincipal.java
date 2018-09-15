@@ -538,8 +538,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         //aqui la tabla iniciar
         // rfer
         Actividades ac;
-        AdministrarActividades aa = new AdministrarActividades(lista_proyectos.get(0).getLista_actividades().get(0).getEstado(),
-                lista_proyectos.get(0).getLista_actividades().get(0).getDuracion()); //estado y duracion
+        AdministrarActividades hilo = null;
+        int duracion = 1;
+        String estado = "En cola";
+        //el for normal para los hilos
+        for (int i = 0; i < lista_proyectos.size(); i++) {
+            for (int j = 0; j < lista_proyectos.get(i).getLista_actividades().size(); j++) {
+                duracion = lista_proyectos.get(i).getLista_actividades().get(j).getDuracion();
+                lista_proyectos.get(i).getLista_actividades().get(j).getEstado();
+                duracion *= 1000;
+                hilo = new AdministrarActividades(estado, duracion);
+                hilo.start();
+            }
+        }
         
     }//GEN-LAST:event_jButton4MouseClicked
 
