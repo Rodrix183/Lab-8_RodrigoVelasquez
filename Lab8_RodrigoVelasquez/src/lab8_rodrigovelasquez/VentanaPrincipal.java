@@ -457,16 +457,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
 
             DefaultTableModel modeloTabla = (DefaultTableModel) tb_Actividades.getModel();
-            String[]datos = new String[6];
+            String[] datos = new String[6];
             datos[0] = nombre;
             datos[1] = Integer.toString(inicio);
             datos[2] = Integer.toString(duracion);
             datos[3] = Integer.toString(final_temp);
             datos[4] = Integer.toString(retraso);
             datos[5] = estado;
-            
+
             modeloTabla.addRow(datos);
-            
+
             JOptionPane.showMessageDialog(jd_Actividad, "Registrado!");
             tf_NombreActividad.setText("");
             tf_RetrasoActividad.setText("");
@@ -536,7 +536,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
         //aqui la tabla iniciar
-       // rfer
+        // rfer
+        Actividades ac;
+        AdministrarActividades aa = new AdministrarActividades(lista_proyectos.get(0).getLista_actividades().get(0).getEstado(),
+                lista_proyectos.get(0).getLista_actividades().get(0).getDuracion()); //estado y duracion
+        
     }//GEN-LAST:event_jButton4MouseClicked
 
     public static void main(String args[]) {
